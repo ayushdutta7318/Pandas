@@ -69,3 +69,60 @@ print(df2["DOJ2"].dt.year)
 
 df2['Year'] = df2["DOJ2"].dt.year;
 print(df2);
+
+
+# If we wanna add something to the row:
+print(df);
+df['DOJ'] = df["DOJ"] + pd.Timedelta(days=90);
+print(df);
+
+# Handling null values: used in real world when there are missing values in dataset.
+import numpy as np;
+df.loc[df.Employee_Name == "ramesh", "Salary"] = np.nan;
+print(df);
+print(df.isnull());
+# to find total null val:
+print(df.isnull().sum());
+
+# to fill null value:
+df.fillna(0, inplace=True);
+print(df);
+
+df.loc[df.Employee_Name == "ramesh", 'Salary'] = 63000;
+print(df);
+
+# Aggregation and Group by:
+print(df['Year'].value_counts());#counts frequency of value in each coln
+print(df[df['Year']==1].value_counts());
+
+# grouping
+print(df.groupby("Year")["Salary"].mean());#aggregation based on group
+print(df.groupby('Year').agg({'Salary': 'mean', 'Employee_Name': 'count'}));
+
+###################################################################################
+# Concat Operation:
+
+df1 = pd.DataFrame({'ID':[1,2,3], 'Name': ['A', 'B', 'C']});
+print(df1);
+
+df2 = pd.DataFrame({'ID':[4,5,6,7], 'Score': [78,95,165,24]});
+print(df2);
+
+print(pd.concat([df1, df2], axis = 0));
+print(pd.concat([df1, df2], axis = 1));
+
+# Merge:
+print(pd.merge(df1, df2, how='inner', on='ID'));
+print(pd.merge(df1, df2, how='right', on='ID'));
+print(pd.merge(df1, df2, how='left', on='ID'));
+print(pd.merge(df1, df2, how='inner', left_on='ID', right_on='ID'));
+
+#AI and ChatGPT: for the given dataframe, create a filter for the employee who joined in january and has salary greater than 70000.
+print(df);
+
+filtered_df = df[
+    (df['DOJ'].dt.month == 4) &
+    (df['Salary'] > 70000)
+]
+
+print(filtered_df);
